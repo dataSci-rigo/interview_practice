@@ -6238,6 +6238,91 @@
       "categories_used": [
         "Algorithms"
       ]
+    },
+    {
+      "question": "Given an array of integers nums and an integer target, return the indices of the two numbers that add up to target. Each input has exactly one solution and you may not use the same element twice. Which of the following is the most efficient approach in Python?",
+      "options": [
+        "Use a nested loop to check all pairs of elements for a sum equal to target.",
+        "Sort the array and use a two-pointer approach to find the pair.",
+        "Use a hash map to store each number's index, and for each element check if its complement exists in the map.",
+        "Use binary search for each element to find its complement in the array."
+      ],
+      "correctAnswer": 2,
+      "category": "Algorithms",
+      "id": "bb84ad00-d5e9-490e-b88b-4ce498964e0e",
+      "generated_at": "2026-06-10T05:16:30.457376",
+      "difficulty_used": "medium",
+      "categories_used": [
+        "Algorithms"
+      ]
+    },
+    {
+      "question": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid (brackets are closed in the correct order). Which algorithm is most efficient for this problem?",
+      "options": [
+        "Use recursion to check each pair of matching brackets from the outside in.",
+        "Use a stack: push opening brackets onto the stack, and for each closing bracket check if it matches the top of the stack.",
+        "Sort the characters and count opening vs closing brackets for each type.",
+        "Use a two-pointer approach moving from both ends toward the center."
+      ],
+      "correctAnswer": 1,
+      "category": "Algorithms",
+      "id": "c2e35b66-da8c-415a-bace-c07228a520ce",
+      "generated_at": "2026-06-10T05:16:30.457376",
+      "difficulty_used": "medium",
+      "categories_used": [
+        "Algorithms"
+      ]
+    },
+    {
+      "question": "Given a list of non-negative integers representing the heights of bars in a histogram, find the maximum amount of water that can be trapped after raining. Which approach solves this most efficiently?",
+      "options": [
+        "For each bar, scan all bars to its left and right to find the max height on each side, then compute trapped water.",
+        "Use a monotonic stack to track bars and calculate trapped water when a taller bar is encountered.",
+        "Use two pointers starting from both ends, moving the pointer with the smaller height inward and accumulating trapped water.",
+        "Both B and C"
+      ],
+      "correctAnswer": 3,
+      "category": "Algorithms",
+      "id": "5f871ac9-daa9-4522-8255-0d4d7d895581",
+      "generated_at": "2026-06-10T05:16:30.457376",
+      "difficulty_used": "medium",
+      "categories_used": [
+        "Algorithms"
+      ]
+    },
+    {
+      "question": "Given a rotated sorted array of distinct integers, find the index of a given target value, or return -1 if it is not present. Which algorithm is the most efficient?",
+      "options": [
+        "Linearly scan the array from left to right until the target is found.",
+        "Use modified binary search: determine which half is sorted, check if target lies in it, and recurse on the appropriate half.",
+        "First find the rotation pivot using binary search, then perform a standard binary search on the correct subarray.",
+        "Both B and C"
+      ],
+      "correctAnswer": 3,
+      "category": "Algorithms",
+      "id": "1a248b54-6ee9-4f05-a072-d1131668eb48",
+      "generated_at": "2026-06-10T05:16:30.457376",
+      "difficulty_used": "medium",
+      "categories_used": [
+        "Algorithms"
+      ]
+    },
+    {
+      "question": "Given an m x n grid of integers, find the longest increasing path such that each step moves to an adjacent cell (up, down, left, right) with a strictly greater value. Which approach is most efficient?",
+      "options": [
+        "Use BFS starting from every cell and track the longest path found.",
+        "Use DFS with memoization: cache the longest path from each cell to avoid recomputation.",
+        "Use dynamic programming by processing cells in sorted order of their values.",
+        "Both B and C"
+      ],
+      "correctAnswer": 3,
+      "category": "Algorithms",
+      "id": "dee8d425-31e9-45ea-8449-a6bd395722db",
+      "generated_at": "2026-06-10T05:16:30.457376",
+      "difficulty_used": "medium",
+      "categories_used": [
+        "Algorithms"
+      ]
     }
   ]
 }
