@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
-"""ML Quiz Telegram Bot — clawbot group, ML topic thread (id=21)."""
+"""ML System Design Quiz — Telegram game module.
 
+Imported by learn_bot.py (the main entry point).
+Can also run standalone:  python ml-quiz-telegram.py
+Token:                     learn_bot env var
+Commands:                  /quiz
+"""
+
+import asyncio
 import json
 import logging
 import os
@@ -19,12 +26,12 @@ from telegram.ext import (
 
 load_dotenv()
 
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-CHAT_ID = int(os.getenv("GROUP_CLAWBOT_CHAT_ID"))
-THREAD_ID = 21
-OWNER_ID = int(os.getenv("OWNER_CHAT_ID"))
-MODEL = "claude-opus-4-20250514"
+TELEGRAM_TOKEN    = os.getenv("learn_bot", "")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+CHAT_ID           = int(os.getenv("GROUP_CLAWBOT_CHAT_ID", "0") or "0")
+THREAD_ID         = 21
+OWNER_ID          = int(os.getenv("OWNER_CHAT_ID", "0") or "0")
+MODEL             = "claude-sonnet-4-6"
 
 CATEGORIES = [
     "Video Recommendation", "Event Recommendation", "Ad Click Prediction",
@@ -228,7 +235,7 @@ async def num_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     await q.edit_message_text(f"⏳ Generating {n} questions for *{level}*…", parse_mode="Markdown")
 
     try:
-        questions = generate_questions(categories, level, n)
+        questions = await asyncio.to_thread(generate_questions, categories, level, n)
     except Exception as exc:
         await post(context, f"❌ Failed to generate questions: {exc}\nTry /quiz again.")
         return ConversationHandler.END
@@ -329,6 +336,23 @@ async def on_startup(app: Application):
         parse_mode="Markdown",
     )
     logger.info("Welcome message sent to ML thread.")
+
+
+# ---------------------------------------------------------------------------
+# Conversation handler (importable by learn_bot)
+# ---------------------------------------------------------------------------
+
+def build_handler() -> ConversationHandler:
+    return ConversationHandler(
+        entry_points=[CommandHandler("mlquiz", quiz_command)],
+        states={
+            SELECT_CATEGORIES:    [CallbackQueryHandler(category_callback, pattern=r"^cat_")],
+            SELECT_LEVEL:         [CallbackQueryHandler(level_callback,    pattern=r"^lvl_")],
+            SELECT_NUM_QUESTIONS: [CallbackQueryHandler(num_callback,      pattern=r"^num_")],
+            ANSWERING:            [CallbackQueryHandler(answer_callback,   pattern=r"^ans_")],
+        },
+        fallbacks=[CommandHandler("mlquiz", quiz_command)],
+    )
 
 
 # ---------------------------------------------------------------------------
