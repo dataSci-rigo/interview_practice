@@ -58,7 +58,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         InlineKeyboardButton(label, callback_data=f"launch_{cmd[1:]}")
     ] for label, cmd in GAMES])
     await update.message.reply_text(
-        "👋 *Learning Hub*\n\nChoose a game to start:",
+        "👋 *Learning Hub*\n\nChoose a game to start:\n\n"
+        "/quiz — FAANG coding practice\n"
+        "/mlquiz — ML system design\n"
+        "/cancel — exit current game\n"
+        "/start — return to this menu",
         reply_markup=keyboard,
         parse_mode="Markdown",
     )

@@ -323,6 +323,12 @@ async def results_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     return ConversationHandler.END
 
 
+async def cancel_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    context.user_data.clear()
+    await update.message.reply_text("❌ Quiz cancelled. Use /quiz to start again or /start for the menu.")
+    return ConversationHandler.END
+
+
 async def shutdown_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.effective_user.id != OWNER_ID:
         await update.message.reply_text("⛔ Owner only.")
@@ -346,7 +352,11 @@ def build_handler() -> ConversationHandler:
                 CallbackQueryHandler(results_callback, pattern=r"^lresults$"),
             ],
         },
-        fallbacks=[CommandHandler("quiz", quiz_start)],
+        fallbacks=[
+            CommandHandler("quiz",   quiz_start),
+            CommandHandler("cancel", cancel_command),
+            CommandHandler("start",  cancel_command),
+        ],
     )
 
 

@@ -311,6 +311,12 @@ async def show_results(context: ContextTypes.DEFAULT_TYPE):
 # Shutdown
 # ---------------------------------------------------------------------------
 
+async def _cancel_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    context.user_data.clear()
+    await update.message.reply_text("❌ Quiz cancelled. Use /mlquiz to start again or /start for the menu.")
+    return ConversationHandler.END
+
+
 async def shutdown_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != OWNER_ID:
         await post(context, "⛔ Only the bot owner can shut down the server.")
@@ -351,7 +357,11 @@ def build_handler() -> ConversationHandler:
             SELECT_NUM_QUESTIONS: [CallbackQueryHandler(num_callback,      pattern=r"^num_")],
             ANSWERING:            [CallbackQueryHandler(answer_callback,   pattern=r"^ans_")],
         },
-        fallbacks=[CommandHandler("mlquiz", quiz_command)],
+        fallbacks=[
+            CommandHandler("mlquiz",  quiz_command),
+            CommandHandler("cancel",  _cancel_command),
+            CommandHandler("start",   _cancel_command),
+        ],
     )
 
 

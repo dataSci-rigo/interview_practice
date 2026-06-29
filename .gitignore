@@ -1,1 +1,5 @@
 .env
+questions_cache.json
+*.csv
+*.ipynb
+__pycache__
