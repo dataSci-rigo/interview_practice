@@ -34,8 +34,9 @@ def _import_hyphenated(name: str, path: Path):
     return mod
 
 _HERE         = Path(__file__).parent
-leet_telegram = _import_hyphenated("leet_telegram",   _HERE / "leet_telegram.py")
+leet_telegram = _import_hyphenated("leet_telegram",    _HERE / "leet_telegram.py")
 ml_quiz       = _import_hyphenated("ml_quiz_telegram", _HERE / "ml-quiz-telegram.py")
+ml_code       = _import_hyphenated("ml_code_telegram", _HERE / "ml-code-telegram.py")
 
 load_dotenv()
 
@@ -50,6 +51,7 @@ logger = logging.getLogger(__name__)
 GAMES = [
     ("🎯  Leet Practice",  "/quiz"),
     ("🧠  ML Design Quiz", "/mlquiz"),
+    ("💻  ML Code Quiz",   "/mlcode"),
 ]
 
 
@@ -61,6 +63,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "👋 *Learning Hub*\n\nChoose a game to start:\n\n"
         "/quiz — FAANG coding practice\n"
         "/mlquiz — ML system design\n"
+        "/mlcode — ML coding from scratch\n"
+        "/progress — DS&A stats\n"
+        "/mlcodeProgress — ML coding stats\n"
         "/cancel — exit current game\n"
         "/start — return to this menu",
         reply_markup=keyboard,
@@ -107,9 +112,12 @@ def main() -> None:
     # Game conversation handlers
     app.add_handler(leet_telegram.build_handler())
     app.add_handler(ml_quiz.build_handler())
+    app.add_handler(ml_code.build_handler())
 
     # Hub commands
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("progress", leet_telegram.progress_command))
+    app.add_handler(CommandHandler("mlcodeProgress", ml_code.progress_command))
     app.add_handler(CallbackQueryHandler(launch_callback, pattern=r"^launch_"))
     app.add_handler(CommandHandler("shutdown", shutdown_command))
 
